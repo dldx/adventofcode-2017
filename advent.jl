@@ -124,3 +124,116 @@ end
 3 8 6 5") == 9
 
 println("Day 2 Part 2: ", day2_part2(day2_input))
+
+
+#############################################
+# ██████╗  █████╗ ██╗   ██╗    ██████╗
+# ██╔══██╗██╔══██╗╚██╗ ██╔╝    ╚════██╗
+# ██║  ██║███████║ ╚████╔╝      █████╔╝
+# ██║  ██║██╔══██║  ╚██╔╝       ╚═══██╗
+# ██████╔╝██║  ██║   ██║       ██████╔╝
+# ╚═════╝ ╚═╝  ╚═╝   ╚═╝       ╚═════╝
+#############################################
+day3_input = 325489
+
+function day3_part1(cell_no)
+    if cell_no == 1
+        return ((0, 0), 0)
+    end
+    x = 0; y=0; multiplier=1; direction = "r"; n = 2
+    while n < cell_no
+        if direction == "r"
+            direction = "u"
+            for a in 1:multiplier
+                x += 1
+                if n == cell_no return ((x, y), abs(x) + abs(y)) end
+                n += 1
+            end
+        elseif direction == "u"
+            direction = "l"
+            for a in 1:multiplier
+                y += 1
+                if n == cell_no return ((x, y), abs(x) + abs(y)) end
+                n += 1
+            end
+            multiplier += 1
+        elseif direction == "l"
+            direction = "d"
+            for a in 1:multiplier
+                x -= 1
+                if n == cell_no return ((x, y), abs(x) + abs(y)) end
+                n += 1
+            end
+        elseif direction == "d"
+            direction = "r"
+            for a in 1:multiplier
+                y -= 1
+                if n == cell_no return ((x, y), abs(x) + abs(y)) end
+                n += 1
+            end
+            multiplier += 1
+        end
+    end
+end
+
+@test day3_part1(1)[2] == 0
+@test day3_part1(12)[2] == 3
+@test day3_part1(23)[2] == 2
+@test day3_part1(1024)[2] == 31
+
+println("Day 3 Part 1: ", day3_part1(day3_input)[2])
+
+function day3_part2(cell_no)
+
+    width = maximum(abs.(day3_part1(cell_no)[1]))*2+4
+    data = Matrix(width, width)
+    data[:] = 0
+    data[Int(width/2), Int(width/2)] = 1
+
+    x = 0; y=0; multiplier=1; direction = "r"; n = 2
+    while n < cell_no
+        if direction == "r"
+            direction = "u"
+            for a in 1:multiplier
+                x += 1
+                value = sum(data[x+Int(width/2)-1:x+Int(width/2)+1, y+Int(width/2)-1:y+Int(width/2)+1])
+                data[x+Int(width/2), y+Int(width/2)] = value
+                if value > cell_no return value end
+                n += 1
+            end
+        elseif direction == "u"
+            direction = "l"
+            for a in 1:multiplier
+                y += 1
+                value = sum(data[x+Int(width/2)-1:x+Int(width/2)+1, y+Int(width/2)-1:y+Int(width/2)+1])
+                data[x+Int(width/2), y+Int(width/2)] = value
+                if value > cell_no return value end
+                n += 1
+            end
+            multiplier += 1
+        elseif direction == "l"
+            direction = "d"
+            for a in 1:multiplier
+                x -= 1
+                value = sum(data[x+Int(width/2)-1:x+Int(width/2)+1, y+Int(width/2)-1:y+Int(width/2)+1])
+                data[x+Int(width/2), y+Int(width/2)] = value
+                if value > cell_no return value end
+                n += 1
+            end
+        elseif direction == "d"
+            direction = "r"
+            for a in 1:multiplier
+                y -= 1
+                value = sum(data[x+Int(width/2)-1:x+Int(width/2)+1, y+Int(width/2)-1:y+Int(width/2)+1])
+                data[x+Int(width/2), y+Int(width/2)] = value
+                if value > cell_no return value end
+                n += 1
+            end
+            multiplier += 1
+        end
+    end
+    return data
+end
+
+
+println("Day 3 Part 3: ", day3_part2(day3_input))
