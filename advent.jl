@@ -237,3 +237,32 @@ end
 
 
 println("Day 3 Part 3: ", day3_part2(day3_input))
+
+#####################################################
+# ██████╗  █████╗ ██╗   ██╗    ██╗  ██╗
+# ██╔══██╗██╔══██╗╚██╗ ██╔╝    ██║  ██║
+# ██║  ██║███████║ ╚████╔╝     ███████║
+# ██║  ██║██╔══██║  ╚██╔╝      ╚════██║
+# ██████╔╝██║  ██║   ██║            ██║
+# ╚═════╝ ╚═╝  ╚═╝   ╚═╝            ╚═╝
+#####################################################
+
+day4_input = readlines("./adventofcode-2017/day4.txt")
+
+function day4_part1(input_string)
+    @_ input_string begin
+        map(x->split(x), _)
+        filter(x-> size(x) == size(unique(x)), _)
+        length(_)
+    end
+end
+println("Day 4 Part 1: ", day4_part1(day4_input))
+
+function day4_part2(input_string)
+    @_ input_string begin
+        map(x->map(y -> join(sort(split(y, ""))), split(x)), _)
+        filter(x-> size(x) == size(unique(x)), _)
+        length(_)
+    end
+end
+println("Day 4 Part 2: ", day4_part2(day4_input))
